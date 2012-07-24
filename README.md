@@ -6,10 +6,10 @@ Currently supporting processingjs (client side), pdf, png, and jpg (server side)
 
 To run the demo, call the server app:
 
-  node app.js
+    node app.js
 
 After runnign the app, call:
 
-  node test.js
+    node test.js
 
 This should generate test.pdf, test.jpg, and test.png.
