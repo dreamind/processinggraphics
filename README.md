@@ -8,7 +8,7 @@ To run the demo, call the server app:
 
     node app.js
 
-After runnign the app, call:
+After running the app, call:
 
     node test.js
 
