@@ -1,0 +1,36 @@
+{
+  "name": "processinggraphics",
+  "preferGlobal": "true",
+  "version": "0.0.1",
+  "author": "dreamind <dreamind@gmail.com>",
+  "description": "A node.js wrapper to processingjs to provide a seamless support to both server/client side processingjs",
+  "scripts": {
+    "start": "node ./app.js",
+    "test": "node ./test.js"
+  },
+  "main": "./lib/processinggraphics",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dreamind/processinggraphics.git"
+  },
+  "keywords": [
+    "processing",
+    "processingjs"
+  ],
+  "dependencies" : {
+    "processing"   :  "*",
+    "pdfkit" :  "*",
+    "express" :  "*",
+    "node-uuid" :  "*",
+    "request" :  "*"
+  },
+  "noAnalyze": true,
+  "devDependencies": {
+  },
+  "bundleDependencies": [
+  ],
+  "license": "MIT",
+  "engine": {
+    "node": ">=0.6"
+  }
+}

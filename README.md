@@ -20,3 +20,6 @@ This should generate test.pdf, test.jpg, and test.png.
 To run the demo, load the following url in the browser:
 
     http://localhost:2000/  
+
+Parameter can be passed from JavaScript to the pde code via `this.externals.sketch.params`.
+The type of this parameter is JavaScript object, which will be *stringified* to server-side processor.
