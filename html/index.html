@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Processing Graphics Example</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dojo/dojo.js"></script>
+    <script src="/pjs/processing.js"></script>
+
+    <script>
+
+      var width = 400, height = 400;
+      var pdeUrl = 'http://localhost:2000/pde/simple.pde';
+
+      function callback(msg) {
+        console.log('massage received from pde', msg)
+      }
+
+      function paint(domNode, pdeUrl) {
+  
+        dojo.xhrGet({
+          url: pdeUrl,
+          load: function(result) {
+            console.log(result, typeof result);
+
+            var compiled = Processing.compile(result.toString('utf-8'));
+            compiled.params = params; // injecting the params
+            var p = new Processing(domNode, compiled);
+          }
+        });
+      }
+  
+      var params = {
+        "x": [1, 2, 3],
+        "y": [1, 4, 9],
+        "color": ["red", "blue", "green"],
+        "width": width,
+        "height": height,
+        "xlabel" : ["one", "two", "three"],
+        "ylabel" : ["22", "88", "55"],
+        "callback": callback,
+
+        "pdf": {
+          "info": {"Title": "Processing Viz", "Author": "node processingjs processor"},
+          "size": "a4",
+          "layout": "portrait"
+        }
+      };
+
+      var jsonRequest = {
+        "pdeUrl": pdeUrl,
+        "type": "png",
+        "params": params
+      }
+
+      function download(a, type) {
+        console.log(a, type);
+        jsonRequest.type = type;
+
+        // process in server side
+        dojo.rawXhrPost({
+          url: '/processingjs',
+          postData: JSON.stringify(jsonRequest),
+          headers: {'Content-Type': 'application/json'},
+          handleAs: 'json',
+          load: function(result) {
+            console.log(result, typeof result);
+            if ( 'status' in result && result.status == 'success' ) {
+              var formNode = dojo.byId('download-form');
+              formNode.action = result.graphicUrl;
+              formNode.submit();
+            }
+          }
+        });
+        return false;
+      }
+
+      dojo.ready(function(){
+
+        dojo.style('processing-canvas', {
+          'width': width,
+          'height': height
+        });
+
+        var domNode = dojo.byId('processing-canvas');
+        paint(domNode, pdeUrl);
+      });
+
+    </script>
+  </head>
+  <body">
+    <div><canvas id="processing-canvas"></canvas></div>
+    <a href="/pde/simple.pde" >Download PDE</a> | 
+    <a href="#" onclick="download(this, 'png')">Download PNG</a> | 
+    <a href="#" onclick="download(this, 'jpg')">Download JPG</a> | 
+    <a href="#" onclick="download(this, 'pdf')">Download PDF</a>
+    <form id="download-form" method="get" target="_blank" action="/tmp/" style="display:none">
+    </form>
+	</body>
+</html>
